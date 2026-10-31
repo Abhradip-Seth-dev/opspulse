@@ -4,7 +4,7 @@
 
 ## Related Jira Issue
 
-Closes OPS-
+OPS-XX
 
 ## Type of Change
 
