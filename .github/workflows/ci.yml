@@ -12,19 +12,49 @@ on:
       - main
 
 jobs:
-  repository-check:
-    name: Repository Structure Check
-    runs-on: ubuntu-latest
+    repository-check:
+      name: Repository Structure Check
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
 
-      - name: Verify repository structure
-        run: |
-          test -f README.md
-          test -f LICENSE
-          test -f .gitignore
-          test -f .github/pull_request_template.md
+        - name: Verify repository structure
+          run: |
+            test -f README.md
+            test -f LICENSE
+            test -f .gitignore
+            test -f .github/pull_request_template.md
+            echo "Repository structure validation passed!"
+    
+    backend-ci:
+      name: Backend Validation
+      runs-on: ubuntu-latest
 
-          echo "Repository structure validation passed!"
+      defaults:
+        run:
+          working-directory: backend
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          with:
+            node-version: 22
+            cache: npm
+            cache-dependency-path: backend/package-lock.json
+
+        - name: Install dependencies
+          run: npm ci
+
+        - name: TypeScript check
+          run: npm run typecheck
+
+        - name: Run tests
+          run: npm test
+
+        - name: Build backend
+          run: npm run build
