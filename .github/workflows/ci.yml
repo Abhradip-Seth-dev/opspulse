@@ -32,6 +32,10 @@ jobs:
       name: Backend Validation
       runs-on: ubuntu-latest
 
+
+      env:
+          DATABASE_URL: "postgresql://opspulse:opspulse_dev_password@localhost:5432/opspulse?schema=public"
+
       defaults:
         run:
           working-directory: backend
