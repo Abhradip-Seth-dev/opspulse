@@ -32,6 +32,10 @@ jobs:
       name: Backend Validation
       runs-on: ubuntu-latest
 
+
+      env:
+          DATABASE_URL: "postgresql://opspulse:opspulse_dev_password@localhost:5432/opspulse?schema=public"
+
       defaults:
         run:
           working-directory: backend
@@ -50,6 +54,11 @@ jobs:
         - name: Install dependencies
           run: npm ci
 
+        - name: Generate Prisma Client
+          run: npx prisma generate
+          env:
+              DATABASE_URL: "postgresql://opspulse:opspulse_dev_password@localhost:5432/opspulse?schema=public"  
+
         - name: TypeScript check
           run: npm run typecheck
 
@@ -58,3 +67,5 @@ jobs:
 
         - name: Build backend
           run: npm run build
+
+       
